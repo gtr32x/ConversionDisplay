@@ -11,7 +11,7 @@ const currencies = [
 function CurrencyInput(props) {
   return (
     <div className="CurrenyInput">
-      <input type="text" />
+      <input className="CurrencyAmount" type="text" />
       <a className="CurrencySelector">{props.currency}</a>
     </div>
   );
@@ -25,6 +25,8 @@ function ConversionDisplay(props) {
       <CurrencyInput currency="ETH" />
       <p>I want to buy</p>
       <CurrencyInput currency="USD" />
+      <p>Summary</p>
+      <p>You get XX USD for XX ETH</p>
     </div>
   );
 }
