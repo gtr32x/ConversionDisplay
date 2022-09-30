@@ -15,7 +15,7 @@ class CurrencySelector extends React.Component {
 
   render() {
     const items = currencies.map((currency) =>
-      <a href="">{currency}</a>
+      <a href="#">{currency}</a>
     );
     return (
       <div className="CurrencySelector">
