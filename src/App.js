@@ -35,7 +35,7 @@ class ConversionDisplay extends React.Component {
       token: 'ETH',
       amt_usd: 100,
       amt_token: 0,
-      last_updated_val: 1, // the following two last updated value is used to control which field to update on new quote arrival
+      last_updated_val: 1, // the following two last updated value is used to control which field to update on new quote arrival, 1 here is USD field, 2 is token field
       last_updated_amt: 100,
       timer_is_set: false,
       show_token_selector: false,
@@ -137,6 +137,7 @@ class ConversionDisplay extends React.Component {
           this.setState({quote_connection_state: "Connected"});
         }
 
+        // Update the existing values
         if (this.state.last_updated_val == 1){
           this.updateUSD(this.state.last_updated_amt);
         }else{
@@ -166,6 +167,7 @@ class ConversionDisplay extends React.Component {
           this.setState({quote_connection_state: "Connected"});
         }
 
+        // Update the existing values
         if (this.state.last_updated_val == 1){
           this.updateUSD();
         }else{
