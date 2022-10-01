@@ -48,6 +48,7 @@
 
 .CurrencyAmount {
   width: 200px;
+  height: 24px;
   padding: 8px;
   font-size: 1.2em;
   background: #eee;
@@ -57,10 +58,17 @@
 
 .CurrencySelector {
   cursor: pointer;
+  display: inline-block;
+  width: 80px;
+  height: 24px;
   padding: 8px 12px;
   font-size: 1.2em;
   background: #ddd;
   border-radius: 0 8px 8px 0;
+}
+
+.CurrencySelector.clickable::after {
+  content: " ▼";
 }
 
 #TokenSelector {

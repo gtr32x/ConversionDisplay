@@ -13,7 +13,7 @@ function CurrencyInput(props) {
   return (
     <div className="CurrenyInput">
       <input className="CurrencyAmount" type="text" value={props.val} onChange={(e) => props.updateFn(e.target.value)} />
-      <a className="CurrencySelector" onClick={(e) => props.selectFn()}>{props.currency}</a>
+      <a className={"CurrencySelector " + (props.selectFn ? "clickable" : "")} onClick={(e) => props.selectFn()}>{props.currency}</a>
     </div>
   );
 }
