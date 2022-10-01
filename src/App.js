@@ -181,7 +181,7 @@ class ConversionDisplay extends React.Component {
   }
 
   render() {
-    const selectors = tokens.map((t) => <a className="TokenOption" onClick={this.selectToken.bind(this)} data-token={t}>{t}</a>);
+    const selectors = tokens.map((t) => <a className="TokenOption" onClick={this.selectToken.bind(this)} key={t} data-token={t}>{t}</a>);
 
     return (
       <div className="ConversionDisplay">
