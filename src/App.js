@@ -134,15 +134,18 @@ class ConversionDisplay extends React.Component {
 
   componentDidMount() {
     // Upon component creation, call each rates API once to fetch the initial data
-    this.pullDataCG();
+    // this.pullDataCG();
     this.pullDataCB();
 
     // Using a flag here to ensure that we will only ever set the timer once in the lifetime of this component to avoid unnecessary API calls that breach the rate limit
     if (!this.state.timer_is_set){
       this.loopCB = setInterval(() => this.pullDataCB(), 10000);
+
+      // Offset CoinGecko api call by 10 seconds so we interleave API data processing
       setTimeout(() => {
-        this.loopCG = setInterval(() => this.pullDataCG(), 10000);
-      }, 2000);
+        // this.loopCG = setInterval(() => this.pullDataCG(), 10000);
+      }, 10000);
+
       this.state.timer_is_set = true;
     }
   }
