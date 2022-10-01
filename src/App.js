@@ -59,7 +59,7 @@ class ConversionDisplay extends React.Component {
     return 0;
   }
 
-  updateVal1(val) {
+  updateToken(val) {
     this.setState({val1: val});
 
     if (this.state.rates_ready){
@@ -72,7 +72,7 @@ class ConversionDisplay extends React.Component {
     this.state.last_updated_val = 1;
   }
 
-  updateVal2(val) {
+  updateUSD(val) {
     this.setState({val2: val});
 
     if (this.state.rates_ready){
@@ -99,9 +99,9 @@ class ConversionDisplay extends React.Component {
         this.state.rates_last_update_ts.CB = this.getCurrentTS();
 
         if (this.state.last_updated_val == 1){
-          this.updateVal1(this.state.last_updated_amt);
+          this.updateToken(this.state.last_updated_amt);
         }else{
-          this.updateVal2(this.state.last_updated_amt);
+          this.updateUSD(this.state.last_updated_amt);
         }
 
         console.log("CB updated");
@@ -123,9 +123,9 @@ class ConversionDisplay extends React.Component {
         this.state.rates_last_update_ts.CG = this.getCurrentTS();
 
         if (this.state.last_updated_val == 1){
-          this.updateVal1(this.state.last_updated_amt);
+          this.updateToken(this.state.last_updated_amt);
         }else{
-          this.updateVal2(this.state.last_updated_amt);
+          this.updateUSD(this.state.last_updated_amt);
         }
 
         console.log("CG updated");
@@ -167,9 +167,9 @@ class ConversionDisplay extends React.Component {
       <div className="ConversionDisplay">
         <h2>Currency Conversion</h2>
         <p>I want to spend</p>
-        <CurrencyInput currency="USD" val={this.state.val1} updateFn={this.updateVal1.bind(this)} />
+        <CurrencyInput currency="USD" val={this.state.val1} updateFn={this.updateToken.bind(this)} />
         <p>I want to buy</p>
-        <CurrencyInput currency={this.state.token} val={this.state.val2} updateFn={this.updateVal2.bind(this)} />
+        <CurrencyInput currency={this.state.token} val={this.state.val2} updateFn={this.updateUSD.bind(this)} />
         <p>Summary</p>
         <p>{this.state.summary}</p>
       </div>
