@@ -42,7 +42,8 @@ class ConversionDisplay extends React.Component {
       show_token_selector: false,
       quote_connection_state: "Waiting",
       quote_timer_text: "Fetching...",
-      quote_timer: 30
+      quote_timer: 30,
+      quote_timer_is_running: 0
     }
   }
 
@@ -190,7 +191,10 @@ class ConversionDisplay extends React.Component {
 
       this.state.timer_is_set = true;
 
-      this.runQuotetimer();
+      if (!this.state.quote_timer_is_running){
+        this.runQuotetimer();
+        this.state.quote_timer_is_running = true;
+      }
     }
   }
 
