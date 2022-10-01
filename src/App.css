@@ -38,6 +38,7 @@
 }
 
 .ConversionDisplay {
+  position: relative;
   width: 400px;
   margin: 30px auto;
   padding: 10px 0 20px 0;
@@ -60,4 +61,30 @@
   font-size: 1.2em;
   background: #ddd;
   border-radius: 0 8px 8px 0;
+}
+
+#TokenSelector {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  border-radius: 0 0 10px 10px;
+  background: white;
+  overflow: hidden;
+}
+
+#TokenSelector h3 {
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc
+}
+
+.TokenOption {
+  display: block;
+  padding: 10px;
+  background: white;
+}
+
+.TokenOption:hover {
+  background: #eee;
+  cursor: pointer;
 }
