@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { Component } from "react"
 
+// Here is the static list of tokens supported in the widget
 const tokens = [
   "ETH",
   "BTC",
@@ -31,12 +32,10 @@ class ConversionDisplay extends React.Component {
         'CB': 0,
         'CG': 0
       },
-      rates_ready: false,
-      pair: ['USD', 'ETH'],
       token: 'ETH',
       amt_usd: 100,
       amt_token: 0,
-      last_updated_val: 1,
+      last_updated_val: 1, // the following two last updated value is used to control which field to update on new quote arrival
       last_updated_amt: 100,
       timer_is_set: false,
       show_token_selector: false,
@@ -52,7 +51,7 @@ class ConversionDisplay extends React.Component {
   }
 
   getRatesForToken(token) {
-    if (this.state.rates_ready){
+    if (this.ratesIsReady()){
       if (this.state.rates_last_update_ts.CB >= this.getCurrentTS() - 40){
         return this.state.rates.CB[token];
       }
@@ -65,11 +64,15 @@ class ConversionDisplay extends React.Component {
     return 0;
   }
 
+  ratesIsReady() {
+    return this.state.rates_last_update_ts.CB > 0 || this.state.rates_last_update_ts.CG > 0;
+  }
+
   updateToken(amt) {
     if (!amt) amt = this.state.amt_token;
     this.setState({amt_token: amt});
 
-    if (this.state.rates_ready){
+    if (this.ratesIsReady()){
       const token_amt = Math.round(amt / this.getRatesForToken(this.state.token) * 10000) / 10000;
       this.setState({amt_usd: token_amt}, () => {
         this.updateSummary();
@@ -84,7 +87,7 @@ class ConversionDisplay extends React.Component {
     if (!amt) amt = this.state.amt_usd;
     this.setState({amt_usd: amt});
 
-    if (this.state.rates_ready){
+    if (this.ratesIsReady()){
       const token_amt = Math.round(amt * this.getRatesForToken(this.state.token) * 10000) / 10000;
       this.setState({amt_token: token_amt}, () => {
         this.updateSummary();
@@ -128,7 +131,6 @@ class ConversionDisplay extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         this.state.rates.CB = json.data.rates;
-        this.state.rates_ready = true;
         this.state.rates_last_update_ts.CB = this.getCurrentTS();
 
         if (this.state.quote_connection_state != "Connected"){
@@ -158,7 +160,6 @@ class ConversionDisplay extends React.Component {
         }
 
         this.state.rates.CG = rates;
-        this.state.rates_ready = true;
         this.state.rates_last_update_ts.CG = this.getCurrentTS();
 
         if (this.state.quote_connection_state != "Connected"){
@@ -177,20 +178,25 @@ class ConversionDisplay extends React.Component {
 
   componentDidMount() {
     // Upon component creation, call each rates API once to fetch the initial data
-    // this.pullDataCG();
+    this.pullDataCG();
     this.pullDataCB();
 
     // Using a flag here to ensure that we will only ever set the timer once in the lifetime of this component to avoid unnecessary API calls that breach the rate limit
     if (!this.state.timer_is_set){
+      // Before setting new intervals, always clear any previous ones if needed
+      clearInterval(this.loopCB);
+      clearInterval(this.loopCG);
+
       this.loopCB = setInterval(() => this.pullDataCB(), 30000);
 
       // Offset CoinGecko api call by 10 seconds so we interleave API data processing
       setTimeout(() => {
-        // this.loopCG = setInterval(() => this.pullDataCG(), 30000);
+        this.loopCG = setInterval(() => this.pullDataCG(), 30000);
       }, 10000);
 
       this.state.timer_is_set = true;
 
+      // Initialize the quote timer once if during component lifecycle it hasn't been ran yet
       if (!this.state.quote_timer_is_running){
         this.runQuotetimer();
         this.state.quote_timer_is_running = true;
