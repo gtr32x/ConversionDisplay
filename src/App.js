@@ -11,7 +11,7 @@ const tokens = [
 
 function CurrencyInput(props) {
   return (
-    <div className="CurrenyInput">
+    <div className="CurrencyInput">
       <input className="CurrencyAmount" type="text" value={props.val} onChange={(e) => props.updateFn(e.target.value)} />
       <a className={"CurrencySelector " + (props.selectFn ? "clickable" : "")} onClick={(e) => props.selectFn ? props.selectFn() : ""}>{props.currency}</a>
     </div>
@@ -191,7 +191,7 @@ class ConversionDisplay extends React.Component {
         <p>I want to buy</p>
         <CurrencyInput currency={this.state.token} val={this.state.amt_token} updateFn={this.updateToken.bind(this)} selectFn={this.openSelector.bind(this)} />
         <p>Summary</p>
-        <p>{this.state.summary}</p>
+        <p className="ConversionSummary">{this.state.summary}</p>
 
         <div id="TokenSelector" style={this.state.show_token_selector ? {} : { display: 'none' }}>
           <h3>Choose a token</h3>
