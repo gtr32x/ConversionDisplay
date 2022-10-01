@@ -42,7 +42,7 @@
   position: relative;
   width: 400px;
   margin: 30px auto;
-  padding: 10px 0 30px 0;
+  padding: 10px 0 40px 0;
   box-shadow: 0 0 2px 2px #30c7fd;
   border-radius: 10px;
 }
@@ -51,7 +51,7 @@
   margin: 10px 0 30px;
 }
 
-.ConversionDisplay p {
+.InputLabel {
   text-align: left;
   margin-bottom: 0;
   padding-left: 40px;
@@ -66,6 +66,10 @@
   background: #eee;
   border: 0;
   border-radius: 8px 0 0 8px;
+}
+
+.CurrencyAmount:focus {
+  outline: none;
 }
 
 .CurrencySelector {
@@ -101,16 +105,18 @@
   color: black !important;
 }
 
-#TokenSelector {
+.TokenSelector {
   position: absolute;
   width: 100%;
   bottom: 0;
   border-radius: 0 0 10px 10px;
   background: white;
   overflow: hidden;
+  z-index: 10;
+  border-top: 2px solid #999;
 }
 
-#TokenSelector h3 {
+.TokenSelector h3 {
   margin: 0;
   padding: 10px 0;
   border-bottom: 1px solid #ccc
@@ -125,4 +131,30 @@
 .TokenOption:hover {
   background: #eee;
   cursor: pointer;
+}
+
+.QuoteStatus {
+  position: absolute;
+  right: 20px;
+  bottom: 0px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.QuoteStatus .Connected {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 5px;
+  background: #75b782;
+}
+
+.QuoteStatus .Waiting {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 5px;
+  background: #950f1a;
 }

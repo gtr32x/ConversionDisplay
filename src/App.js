@@ -39,7 +39,10 @@ class ConversionDisplay extends React.Component {
       last_updated_val: 1,
       last_updated_amt: 100,
       timer_is_set: false,
-      show_token_selector: false
+      show_token_selector: false,
+      quote_connection_state: "Waiting",
+      quote_timer_text: "Fetching...",
+      quote_timer: 30
     }
   }
 
@@ -103,6 +106,17 @@ class ConversionDisplay extends React.Component {
     });
   }
 
+  runQuotetimer() {
+    if (this.state.quote_timer > 0){
+      this.state.quote_timer -= 1;
+      this.setState({quote_timer_text: this.state.quote_timer + "s"});
+    }else{
+      this.setState({quote_timer_text: "Fetching...", quote_connection_state: "Waiting"});
+    }
+
+    return setTimeout(() => this.runQuotetimer(), 1000);
+  }
+
   updateSummary() {
     let str = "You get " + this.state.amt_token + " " + this.state.token + " for $" + this.state.amt_usd + " USD";
     this.setState({summary: str});
@@ -116,11 +130,17 @@ class ConversionDisplay extends React.Component {
         this.state.rates_ready = true;
         this.state.rates_last_update_ts.CB = this.getCurrentTS();
 
+        if (this.state.quote_connection_state != "Connected"){
+          this.setState({quote_connection_state: "Connected"});
+        }
+
         if (this.state.last_updated_val == 1){
           this.updateUSD(this.state.last_updated_amt);
         }else{
           this.updateToken(this.state.last_updated_amt);
         }
+
+        this.state.quote_timer = 30;
 
         console.log("CB updated");
       });
@@ -139,6 +159,10 @@ class ConversionDisplay extends React.Component {
         this.state.rates.CG = rates;
         this.state.rates_ready = true;
         this.state.rates_last_update_ts.CG = this.getCurrentTS();
+
+        if (this.state.quote_connection_state != "Connected"){
+          this.setState({quote_connection_state: "Connected"});
+        }
 
         if (this.state.last_updated_val == 1){
           this.updateUSD();
@@ -165,6 +189,8 @@ class ConversionDisplay extends React.Component {
       }, 10000);
 
       this.state.timer_is_set = true;
+
+      this.runQuotetimer();
     }
   }
 
@@ -186,17 +212,19 @@ class ConversionDisplay extends React.Component {
     return (
       <div className="ConversionDisplay">
         <h2>Currency Conversion</h2>
-        <p>I want to spend</p>
+        <p className="InputLabel">I want to spend</p>
         <CurrencyInput currency="USD" val={this.state.amt_usd} updateFn={this.updateUSD.bind(this)} />
-        <p>I want to buy</p>
+        <p className="InputLabel">I want to buy</p>
         <CurrencyInput currency={this.state.token} val={this.state.amt_token} updateFn={this.updateToken.bind(this)} selectFn={this.openSelector.bind(this)} />
-        <p>Summary</p>
+        <p className="InputLabel">Summary</p>
         <p className="ConversionSummary">{this.state.summary}</p>
 
-        <div id="TokenSelector" style={this.state.show_token_selector ? {} : { display: 'none' }}>
+        <div className="TokenSelector" style={this.state.show_token_selector ? {} : { display: 'none' }}>
           <h3>Choose a token</h3>
           {selectors}
         </div>
+
+        <p className="QuoteStatus"><span className={this.state.quote_connection_state}></span>Next Quote Fetch: <span className="QuoteTimer">{this.state.quote_timer_text}</span></p>
       </div>
     );
   }
